@@ -602,32 +602,36 @@ void Game::doMap() const {
     // STAGE       : indent 11칸 → ◀ + 10칸
     // SHOP        : 오른쪽에 표시
 
+    // ◀ 를 박스 바로 왼쪽에 붙임 (indent에서 ◀+공백 2칸만 차지)
+    // CASINO/HOME : indent 13 → 11spaces + "◀ "
+    // STAGE       : indent 11 → 9spaces  + "◀ "
+
     std::cout << "\n=== Market Quest Map ===\n";
     std::cout << "             +-------------+\n";
-    std::cout << (cur==roomCasino  ? "◀            " : "             ") << "|    CASINO   |\n";
+    std::cout << (cur==roomCasino  ? "           ◀ " : "             ") << "|    CASINO   |\n";
     std::cout << "             +-------------+\n";
     std::cout << "                    |\n";
     std::cout << "             +-------------+          +-------------+\n";
     if (cur == roomShop)
         std::cout << "             |     HOME    |----------|     SHOP    |  ◀ 현재 위치\n";
     else
-        std::cout << (cur==roomHome ? "◀            " : "             ") << "|     HOME    |----------|     SHOP    |\n";
+        std::cout << (cur==roomHome ? "           ◀ " : "             ") << "|     HOME    |----------|     SHOP    |\n";
     std::cout << "             +-------------+          +-------------+\n";
     std::cout << "                    |\n";
     std::cout << "           +------------------+\n";
-    std::cout << (cur==roomMeeting[0] ? "◀          " : "           ") << "|     STAGE 1      |\n";
+    std::cout << (cur==roomMeeting[0] ? "         ◀ " : "           ") << "|     STAGE 1      |\n";
     std::cout << "           +------------------+\n";
     std::cout << "                    |\n";
     std::cout << "           +------------------+\n";
-    std::cout << (cur==roomMeeting[1] ? "◀          " : "           ") << "|     STAGE 2      |\n";
+    std::cout << (cur==roomMeeting[1] ? "         ◀ " : "           ") << "|     STAGE 2      |\n";
     std::cout << "           +------------------+\n";
     std::cout << "                    |\n";
     std::cout << "           +------------------+\n";
-    std::cout << (cur==roomMeeting[2] ? "◀          " : "           ") << "|     STAGE 3      |\n";
+    std::cout << (cur==roomMeeting[2] ? "         ◀ " : "           ") << "|     STAGE 3      |\n";
     std::cout << "           +------------------+\n";
     std::cout << "                    |\n";
     std::cout << "           +------------------+\n";
-    std::cout << (cur==roomMeeting[3] ? "◀          " : "           ") << "|   FINAL STAGE    |\n";
+    std::cout << (cur==roomMeeting[3] ? "         ◀ " : "           ") << "|   FINAL STAGE    |\n";
     std::cout << "           +------------------+\n";
 }
 
