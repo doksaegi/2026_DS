@@ -605,7 +605,7 @@ void Game::doMap() const {
     if (cur == roomShop)
         std::cout << "             |     HOME    |----------|     SHOP    |" << H << "\n";
     else if (cur == roomHome)
-        std::cout << "◀ 현재 위치  |     HOME    |----------|     SHOP    |\n";
+        std::cout << "현재 위치 ▶  |     HOME    |----------|     SHOP    |\n";
     else
         std::cout << "             |     HOME    |----------|     SHOP    |\n";
     std::cout << "             +-------------+          +-------------+\n";
