@@ -821,6 +821,12 @@ void Game::run() {
         processCommand(line);
     }
 
+    if (stageCleared[3]) {
+        // 엔딩 크레딧은 onStageClear(3)에서 이미 출력됨
+        std::cout << "Goodbye.\n";
+        return;
+    }
+
     if (!player.isAlive()) {
         std::cout << "\n══════════════════════════════════════\n";
         std::cout << "           💀 GAME OVER               \n";
