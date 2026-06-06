@@ -377,9 +377,9 @@ void Game::runSlotMachine() {
     bool hasPet = player.getInventory().hasItemOfType(ItemType::Pet);
     // 확률: 잭팟 5%, 대박 20%, 소박 35%, 꽝 40% (펫 있으면 꽝 35%)
     int roll = std::rand() % 100;
-    int jackpotThres = 5;
-    int bigThres     = 25;   // 5+20
-    int smallThres   = 60;   // 5+20+35
+    int jackpotThres = 1;
+    int bigThres     = 9;   // 5+20
+    int smallThres   = 80;   // 5+20+35
     // 꽝 확률: 나머지 (40% or 35%)
 
     std::cout << "\n🎰 슬롯 결과: ";
