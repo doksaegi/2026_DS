@@ -596,29 +596,40 @@ void Game::doStatus() const {
 }
 
 void Game::doMap() const {
+    int cur = player.getCurrentRoomId();
+    auto here = [&](int id) -> const char* {
+        return (cur == id) ? "  ◀ 현재 위치" : "";
+    };
+
     std::cout << "\n=== Market Quest Map ===\n";
     std::cout << "             +-------------+\n";
-    std::cout << "             |    CASINO   |\n";
+    std::cout << "             |    CASINO   |" << here(roomCasino) << "\n";
     std::cout << "             +-------------+\n";
     std::cout << "                    |\n";
     std::cout << "             +-------------+          +-------------+\n";
-    std::cout << "             |     HOME    |----------|     SHOP    |\n";
+    if (cur == roomHome) {
+        std::cout << "             |     HOME    |◀현재위치  |     SHOP    |\n";
+    } else if (cur == roomShop) {
+        std::cout << "             |     HOME    |          |     SHOP    |  ◀ 현재 위치\n";
+    } else {
+        std::cout << "             |     HOME    |----------|     SHOP    |\n";
+    }
     std::cout << "             +-------------+          +-------------+\n";
     std::cout << "                    |\n";
     std::cout << "           +------------------+\n";
-    std::cout << "           |     STAGE 1      |\n";
+    std::cout << "           |     STAGE 1      |" << here(roomMeeting[0]) << "\n";
     std::cout << "           +------------------+\n";
     std::cout << "                    |\n";
     std::cout << "           +------------------+\n";
-    std::cout << "           |     STAGE 2      |\n";
+    std::cout << "           |     STAGE 2      |" << here(roomMeeting[1]) << "\n";
     std::cout << "           +------------------+\n";
     std::cout << "                    |\n";
     std::cout << "           +------------------+\n";
-    std::cout << "           |     STAGE 3      |\n";
+    std::cout << "           |     STAGE 3      |" << here(roomMeeting[2]) << "\n";
     std::cout << "           +------------------+\n";
     std::cout << "                    |\n";
     std::cout << "           +------------------+\n";
-    std::cout << "           |   FINAL STAGE    |\n";
+    std::cout << "           |   FINAL STAGE    |" << here(roomMeeting[3]) << "\n";
     std::cout << "           +------------------+\n";
 }
 
