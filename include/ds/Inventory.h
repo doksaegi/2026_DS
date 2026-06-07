@@ -24,9 +24,11 @@ public:
 
     void         addItem(const Item& item);
     bool         removeItem(const std::string& itemName);
+    bool         removeItemOfType(ItemType type);
     Item*        findItem(const std::string& itemName);
     const Item*  findItem(const std::string& itemName) const;
     bool         hasItemOfType(ItemType type) const;
+    int          countItemOfType(ItemType type) const;
     bool         isEmpty() const;
     int          size()    const;
     void         clear();

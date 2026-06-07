@@ -67,6 +67,7 @@ private:
 
     // 스테이지 해금 체크
     bool canUnlockStage(int stage) const;
+    void consumeStageItem(int stageIndex);
     void onStageClear(int stage);
 
     void processCommand(const std::string& line);

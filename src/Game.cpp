@@ -319,9 +319,9 @@ bool Game::canUnlockStage(int stage) const {
         case 0: // Stage 1: 돈 30,000원 + 상품 1개
             return player.getMoney() >= 30000
                 && player.getInventory().hasItemOfType(ItemType::Goods);
-        case 1: // Stage 2: 돈 100,000원 + 상품 보유
+        case 1: // Stage 2: 돈 100,000원 + 상품 2개
             return player.getMoney() >= 100000
-                && player.getInventory().hasItemOfType(ItemType::Goods);
+                && player.getInventory().countItemOfType(ItemType::Goods) >= 2;
         case 2: // Stage 3: 돈 300,000원 + 무기
             return player.getMoney() >= 300000
                 && player.getInventory().hasItemOfType(ItemType::Weapon);
@@ -333,10 +333,29 @@ bool Game::canUnlockStage(int stage) const {
     }
 }
 
+void Game::consumeStageItem(int stageIndex) {
+    ItemType requiredType = ItemType::None;
+    switch (stageIndex) {
+        case 0:
+        case 1:
+            requiredType = ItemType::Goods;
+            break;
+        case 2:
+            requiredType = ItemType::Weapon;
+            break;
+        default:
+            return;
+    }
+
+    player.getInventory().removeItemOfType(requiredType);
+}
+
 void Game::onStageClear(int stageIndex) {
     stageCleared[stageIndex] = true;
     currentStage = stageIndex + 1;
     ++enemyCount;
+
+    consumeStageItem(stageIndex);
 
     // 카지노 최소 베팅 상승
     int bets[] = { 1000, 5000, 15000, 50000 };
@@ -730,7 +749,8 @@ void Game::doSell(const std::string& itemName) {
 void Game::doQuest() const {
     auto check = [](bool ok) -> const char* { return ok ? "[완료]" : "[  ]  "; };
     int money = player.getMoney();
-    bool hasGoods  = player.getInventory().hasItemOfType(ItemType::Goods);
+    int goodsCount = player.getInventory().countItemOfType(ItemType::Goods);
+    bool hasGoods  = goodsCount >= 1;
     bool hasWeapon = player.getInventory().hasItemOfType(ItemType::Weapon);
 
     std::cout << "\n=== 퀘스트 ===\n";
@@ -752,8 +772,8 @@ void Game::doQuest() const {
     } else if (!stageCleared[0]) {
         std::cout << "  Stage 1 클리어 후 해금\n";
     } else {
-        std::cout << "  " << check(money >= 100000) << " 돈 100,000원 이상\n";
-        std::cout << "  " << check(hasGoods)         << " 상품 보유\n";
+        std::cout << "  " << check(money >= 100000)      << " 돈 100,000원 이상\n";
+        std::cout << "  " << check(goodsCount >= 2)      << " 상품 2개 이상 보유\n";
         std::cout << "  -> 조건 충족 후 '약속 장소 2'에서 battle\n";
     }
 
@@ -884,6 +904,10 @@ void Game::processCommand(const std::string& line) {
             return;
         }
         doBattle(stageIdx);
+        if (running && player.getCurrentRoomId() == roomMeeting[stageIdx]) {
+            player.setCurrentRoomId(roomHome);
+            std::cout << "전투가 끝나고 집으로 돌아왔습니다.\n";
+        }
     } else if (cmd == "casino") {
         if (player.getCurrentRoomId() != roomCasino) {
             std::cout << "카지노에서만 슬롯머신을 이용할 수 있다.\n";

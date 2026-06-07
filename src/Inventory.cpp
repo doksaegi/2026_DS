@@ -34,6 +34,26 @@ bool Inventory::removeItem(const std::string& itemName) {
     return false;
 }
 
+bool Inventory::removeItemOfType(ItemType type) {
+    Node* current = head;
+    Node* prev    = nullptr;
+    while (current != nullptr) {
+        if (current->item.getType() == type) {
+            if (prev == nullptr) {
+                head = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            delete current;
+            --count;
+            return true;
+        }
+        prev    = current;
+        current = current->next;
+    }
+    return false;
+}
+
 Item* Inventory::findItem(const std::string& itemName) {
     Node* current = head;
     while (current != nullptr) {
@@ -61,6 +81,16 @@ bool Inventory::hasItemOfType(ItemType type) const {
         current = current->next;
     }
     return false;
+}
+
+int Inventory::countItemOfType(ItemType type) const {
+    int total = 0;
+    Node* current = head;
+    while (current != nullptr) {
+        if (current->item.getType() == type) ++total;
+        current = current->next;
+    }
+    return total;
 }
 
 bool Inventory::isEmpty() const { return count == 0; }
