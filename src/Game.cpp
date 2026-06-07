@@ -108,9 +108,12 @@ void Game::buildJinsangs() {
 }
 
 void Game::seedScores() {
+    scoreTree.insert(ScoreRecord("???", 2147483647));
+    scoreTree.insert(ScoreRecord("살아있는 전설 춘식", 50000000));
     scoreTree.insert(ScoreRecord("레전드 춘식", 1500000));
     scoreTree.insert(ScoreRecord("중수 춘식",    500000));
     scoreTree.insert(ScoreRecord("초보 춘식",    100000));
+    scoreTree.insert(ScoreRecord("아가 춘식",    10000));
 }
 
 // ─────────────────────────────────────────

@@ -1,4 +1,5 @@
 #include "ds/Inventory.h"
+#include "ds/Sorting.h"
 #include <iostream>
 
 Inventory::Inventory() : head(nullptr), count(0) {}
@@ -112,11 +113,22 @@ void Inventory::print() const {
         std::cout << "인벤토리가 비어 있습니다.\n";
         return;
     }
-    std::cout << "=== 인벤토리 (" << count << "개) ===\n";
+
+    Item* items = new Item[count];
     Node* current = head;
+    int index = 0;
     while (current != nullptr) {
-        std::cout << "  - ";
-        current->item.print();
+        items[index++] = current->item;
         current = current->next;
     }
+
+    sortItemsByValueDescending(items, count);
+
+    std::cout << "=== 인벤토리 (" << count << "개) ===\n";
+    for (int i = 0; i < count; ++i) {
+        std::cout << "  - ";
+        items[i].print();
+    }
+
+    delete[] items;
 }
