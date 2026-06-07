@@ -48,7 +48,7 @@ private:
     void doInventory()  const;
     void doMap()        const;
     void doSortItems()  const;
-    void doScores()     const;
+    void doScores();
     void doSell(const std::string& itemName);
     void triggerRandomEvent();
 

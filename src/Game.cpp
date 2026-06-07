@@ -355,6 +355,7 @@ void Game::onStageClear(int stageIndex) {
         std::cout << "──────────────────────────────────────\n\n";
         std::cout << "        [ 처음부터 다시하기 ]\n";
         std::cout << "──────────────────────────────────────\n";
+        scoreTree.removeByName(player.getName());
         scoreTree.insert(ScoreRecord(player.getName(), player.getMoney()));
         scoreTree.printDescending();
         running = false;
@@ -684,10 +685,9 @@ void Game::doSell(const std::string& itemName) {
                   << " (현재: " << player.getCombatPower() << ")\n";
 }
 
-void Game::doScores() const {
-    std::cout << "\n=== BST 랭킹 (높은 점수순) ===\n";
-    std::cout << "  [현재] " << player.getName()
-              << " - " << player.getMoney() << "원\n";
+void Game::doScores() {
+    scoreTree.removeByName(player.getName());
+    scoreTree.insert(ScoreRecord(player.getName(), player.getMoney()));
     scoreTree.printDescending();
 }
 
@@ -890,6 +890,7 @@ void Game::run() {
         std::cout << "다음 생엔 제발 저축 좀 하자...\n";
     }
 
+    scoreTree.removeByName(player.getName());
     scoreTree.insert(ScoreRecord(player.getName(), player.getMoney()));
     std::cout << "\n최종 보유 금액: " << player.getMoney() << "원\n";
     scoreTree.printDescending();

@@ -23,6 +23,7 @@ private:
     int   count;
 
     Node* insertRecursive(Node* current, const ScoreRecord& record);
+    Node* removeByNameRecursive(Node* current, const std::string& name, bool& removed);
     bool  containsRecursive(Node* current, const std::string& playerName) const;
     void  printDescendingRecursive(Node* current) const;
     void  clearRecursive(Node* current);
@@ -36,6 +37,7 @@ public:
 
     void insert(const ScoreRecord& record);
     bool containsPlayer(const std::string& playerName) const;
+    void removeByName(const std::string& playerName);
     void printDescending() const;
     int  size()    const;
     bool isEmpty() const;
