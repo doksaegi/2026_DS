@@ -35,10 +35,16 @@ void Room::printDescription() const {
     std::cout << "=============================\n";
     std::cout << description << "\n";
     if (!items.isEmpty()) {
-        std::cout << "[아이템]\n";
-        for (int i = 0; i < items.size(); ++i) {
-            std::cout << "  - ";
-            items[i].print();
+        bool anyVisible = false;
+        for (int i = 0; i < items.size(); ++i)
+            if (!items[i].isHidden()) { anyVisible = true; break; }
+        if (anyVisible) {
+            std::cout << "[아이템]\n";
+            for (int i = 0; i < items.size(); ++i) {
+                if (items[i].isHidden()) continue;
+                std::cout << "  - ";
+                items[i].print();
+            }
         }
     }
 }

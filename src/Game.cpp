@@ -65,7 +65,7 @@ void Game::buildWorld() {
         shop->addItem(Item("벽돌",      "단단한 벽돌. 기본 무기.",            10000, 5,  ItemType::Weapon));
         shop->addItem(Item("창",        "날카로운 창.",                         30000, 12, ItemType::Weapon));
         shop->addItem(Item("총",        "현대 무기의 정수.",                    80000, 25, ItemType::Weapon));
-        shop->addItem(Item("엑스칼리버","전설의 검. 이걸 들면 무적이다.",      300000, 50, ItemType::Weapon));
+        shop->addItem(Item("엑스칼리버","전설의 검. 이걸 들면 무적이다.",      300000, 50, ItemType::Weapon, true));
         shop->addItem(Item("빵",        "편의점 빵. 마음의 위안.",               3000,  8, ItemType::Food));
         shop->addItem(Item("라면",      "뜨거운 라면 한 그릇.",                  5000, 12, ItemType::Food));
         shop->addItem(Item("햄버거",    "더블 패티 햄버거. 힘이 솟는다.",        8000, 15, ItemType::Food));
@@ -501,6 +501,7 @@ void Game::doShop() {
     sortItemsByValueDescending(copy, count);
     std::cout << "상품 목록:\n";
     for (int i = 0; i < count; ++i) {
+        if (copy[i].isHidden()) continue;
         std::cout << "  - ";
         copy[i].print();
     }

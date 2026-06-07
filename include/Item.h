@@ -18,17 +18,20 @@ private:
     int         value;       // 구매 가격
     int         effectValue; // 전투력 상승량 or 확률 상승량
     ItemType    type;
+    bool        hidden;      // 목록에서 숨김 (이스터에그용)
 
 public:
     Item();
     Item(const std::string& name, const std::string& description,
-         int value, int effectValue = 0, ItemType type = ItemType::None);
+         int value, int effectValue = 0, ItemType type = ItemType::None,
+         bool hidden = false);
 
     std::string getName()        const;
     std::string getDescription() const;
     int         getValue()       const;
     int         getEffectValue() const;
     ItemType    getType()        const;
+    bool        isHidden()       const;
 
     void print() const;
 };

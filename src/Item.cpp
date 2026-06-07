@@ -2,18 +2,19 @@
 #include <iostream>
 
 Item::Item()
-    : name(""), description(""), value(0), effectValue(0), type(ItemType::None) {}
+    : name(""), description(""), value(0), effectValue(0), type(ItemType::None), hidden(false) {}
 
 Item::Item(const std::string& name, const std::string& description,
-           int value, int effectValue, ItemType type)
+           int value, int effectValue, ItemType type, bool hidden)
     : name(name), description(description),
-      value(value), effectValue(effectValue), type(type) {}
+      value(value), effectValue(effectValue), type(type), hidden(hidden) {}
 
 std::string Item::getName()        const { return name; }
 std::string Item::getDescription() const { return description; }
 int         Item::getValue()       const { return value; }
 int         Item::getEffectValue() const { return effectValue; }
 ItemType    Item::getType()        const { return type; }
+bool        Item::isHidden()       const { return hidden; }
 
 void Item::print() const {
     std::string typeStr;
