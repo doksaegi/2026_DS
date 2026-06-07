@@ -4,6 +4,12 @@
 #include <sstream>
 #include <cstdlib>
 #include <ctime>
+#include <thread>
+#include <chrono>
+
+static void battleDelay() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+}
 
 // ─────────────────────────────────────────
 //  생성자
@@ -123,6 +129,7 @@ int Game::calcInitialProb(int jinsangPower) const {
 // ─────────────────────────────────────────
 bool Game::battleTurn(int& prob, const Jinsang& jinsang) {
     std::cout << "\n현재 거래 확률: " << prob << "%\n";
+    battleDelay();
     std::cout << "행동을 선택하세요:\n";
     std::cout << "  1. 설득하기       (확률 +10%)\n";
     std::cout << "  2. 가격 할인      (보유 금액 10% 소모, 확률 +20%)\n";
@@ -138,18 +145,22 @@ bool Game::battleTurn(int& prob, const Jinsang& jinsang) {
     if (input == "1") {
         prob += 10;
         std::cout << "춘식: \"한번만 봐주세요...\" 설득 성공! 확률 +10%\n";
+        battleDelay();
 
     } else if (input == "2") {
         int cost = player.getMoney() / 10;
         if (cost == 0) {
             std::cout << "돈이 너무 없어서 할인을 줄 수 없다...\n";
+            battleDelay();
             return false;
         }
         player.spendMoney(cost);
         prob += 20;
         std::cout << cost << "원을 할인해줬다. 확률 +20%\n";
+        battleDelay();
         if (!player.isAlive()) {
             std::cout << "\n💸 돈이 0원이 됐다! 감옥으로...\n";
+            battleDelay();
             running = false;
             return true;
         }
@@ -157,14 +168,17 @@ bool Game::battleTurn(int& prob, const Jinsang& jinsang) {
     } else if (input == "3") {
         if (!player.getInventory().hasItemOfType(ItemType::Goods)) {
             std::cout << "자랑할 상품이 없다. 상점에서 상품을 구매하자.\n";
+            battleDelay();
             return false;
         }
         prob += 15;
         std::cout << "상품을 꺼내 보여줬다. 진상의 눈이 번뜩인다. 확률 +15%\n";
+        battleDelay();
 
     } else if (input == "4") {
         if (!player.getInventory().hasItemOfType(ItemType::Pet)) {
             std::cout << "펫이 없다.\n";
+            battleDelay();
             return false;
         }
         // 펫은 1회만 사용 가능 (제거)
@@ -179,6 +193,7 @@ bool Game::battleTurn(int& prob, const Jinsang& jinsang) {
             prob += bonus;
             std::cout << petName << "를 꺼냈다! 진상이 순간 녹아내린다. 확률 +"
                       << bonus << "%\n";
+            battleDelay();
         }
 
     } else if (input == "5") {
@@ -188,6 +203,7 @@ bool Game::battleTurn(int& prob, const Jinsang& jinsang) {
         if (!food) food = player.getInventory().findItem("빵");
         if (!food) {
             std::cout << "음식이 없다.\n";
+            battleDelay();
             return false;
         }
         int bonus = food->getEffectValue();
@@ -196,11 +212,13 @@ bool Game::battleTurn(int& prob, const Jinsang& jinsang) {
         prob += bonus;
         std::cout << foodName << "을 대접했다. 진상도 인간이었나... 확률 +"
                   << bonus << "%\n";
+        battleDelay();
 
     } else if (input == "6") {
         // 거래 시도
         if (prob <= 0) {
             std::cout << "\n확률이 0%! 거래가 즉시 실패했다...\n";
+            battleDelay();
             return true;
         }
         return true; // 판정은 호출부에서
@@ -212,6 +230,7 @@ bool Game::battleTurn(int& prob, const Jinsang& jinsang) {
     // 진상 턴: 방해
     SkillEffect effect = jinsang.useRandomSkill();
     std::cout << "\n진상의 방해: " << effect.message << "\n";
+    battleDelay();
     prob += effect.probDelta;
 
     if (effect.moneySteal > 0) {
@@ -219,8 +238,10 @@ bool Game::battleTurn(int& prob, const Jinsang& jinsang) {
         if (stolen > player.getMoney()) stolen = player.getMoney();
         player.spendMoney(stolen);
         std::cout << stolen << "원을 빼앗겼다! 남은 돈: " << player.getMoney() << "원\n";
+        battleDelay();
         if (!player.isAlive()) {
             std::cout << "\n💸 돈이 0원이 됐다! 감옥으로...\n";
+            battleDelay();
             running = false;
             return true;
         }
@@ -228,6 +249,7 @@ bool Game::battleTurn(int& prob, const Jinsang& jinsang) {
 
     if (prob <= 0) {
         std::cout << "\n확률이 0% 이하로 떨어졌다! 거래 즉시 실패.\n";
+        battleDelay();
         return true;
     }
 
@@ -248,10 +270,15 @@ void Game::doBattle(int stageIndex) {
     int prob = calcInitialProb(jinsang.getCombatPower());
 
     std::cout << "\n==============================\n";
+    battleDelay();
     std::cout << "  거래 시작: " << jinsang.getName() << "\n";
+    battleDelay();
     std::cout << "  진상 전투력: " << jinsang.getCombatPower() << "\n";
+    battleDelay();
     std::cout << "  초기 거래 확률: " << prob << "%\n";
+    battleDelay();
     std::cout << "==============================\n";
+    battleDelay();
 
     bool tradeAttempted = false;
     while (running) {
@@ -263,10 +290,12 @@ void Game::doBattle(int stageIndex) {
     // 거래 판정
     if (prob <= 0) {
         std::cout << "\n거래 실패! 다음에 다시 도전하자.\n";
+        battleDelay();
         return;
     }
     if (prob >= 100) {
         std::cout << "\n거래 성공!\n";
+        battleDelay();
         onStageClear(stageIndex);
         return;
     }
@@ -274,9 +303,11 @@ void Game::doBattle(int stageIndex) {
     int roll = std::rand() % 100 + 1;
     if (roll <= prob) {
         std::cout << "\n거래 성공!\n";
+        battleDelay();
         onStageClear(stageIndex);
     } else {
         std::cout << "\n거래 실패! 다음에 다시 도전하자.\n";
+        battleDelay();
     }
 }
 
@@ -658,10 +689,12 @@ void Game::triggerRandomEvent() {
     if (!eventQueue.dequeue(out)) return;
 
     std::cout << "\n[이벤트] " << out.description << "\n";
+    battleDelay();
     if (out.moneyDelta != 0) {
         player.addMoney(out.moneyDelta);
         std::cout << "  돈 변화: " << out.moneyDelta
                   << "원 (현재: " << player.getMoney() << "원)\n";
+        battleDelay();
     }
 }
 
