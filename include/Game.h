@@ -22,7 +22,7 @@ private:
     int               minBet;          // 카지노 최소 베팅
     bool              stageCleared[4]; // 각 스테이지 클리어 여부
     int               enemyCount;      // 처치한 진상 수
-    int               laborCount;      // 상하차 횟수
+    int               laborCount;      // 카지노 방문 횟수
     Jinsang           jinsangs[4];     // 진상 4명
 
     // 방 ID 상수
@@ -48,6 +48,7 @@ private:
     void doInventory()  const;
     void doMap()        const;
     void doSortItems()  const;
+    void doScores()     const;
     void doSell(const std::string& itemName);
     void triggerRandomEvent();
 

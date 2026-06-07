@@ -333,7 +333,7 @@ void Game::onStageClear(int stageIndex) {
         std::cout << "\n[잔잔한 BGM이 흐르다가... 갑자기 멈춤]\n\n";
         std::cout << "백춘식은 해냈다.\n\n";
         std::cout << "진상들을 물리치고,\n";
-        std::cout << "상하차로 허리가 나가면서도,\n";
+        std::cout << "카지노에서 전재산을 날릴 뻔하면서도,\n";
         std::cout << "중고거래로 떼돈을 벌었다.\n\n";
         std::cout << "월세?  납부 완료.\n";
         std::cout << "카드값?  납부 완료.\n";
@@ -349,7 +349,7 @@ void Game::onStageClear(int stageIndex) {
         std::cout << "──────────────────────────────────────\n";
         std::cout << "  최종 수익: " << player.getMoney() << " 원\n";
         std::cout << "  진상 처치 수: " << enemyCount << " 명\n";
-        std::cout << "  상하차 횟수: " << laborCount << " 회\n\n";
+        std::cout << "  카지노 방문 횟수: " << laborCount << " 회\n\n";
         std::cout << "  \"춘식아, 넌 할 수 있어.\"\n";
         std::cout << "  - 엄마 (아직도 반지하 원룸 거주 중)\n";
         std::cout << "──────────────────────────────────────\n\n";
@@ -439,7 +439,7 @@ void Game::printShopGreeting() const {
         "중고거래는 실력이 아니라 타이밍이다.",
         "시세는 거짓말하지 않는다. 사람은 한다.",
         "오늘도 누군가는 바가지를 쓰고, 누군가는 돈을 번다.",
-        "상하차는 했나? 안 했으면 물건 구경만 해."
+        "카지노는 갔다 왔나? 안 갔으면 물건 구경만 해."
     };
     const int count = 8;
     std::cout << "\n🧍 상인: \"" << msgs[std::rand() % count] << "\"\n";
@@ -449,7 +449,7 @@ void Game::printShopPurchaseMsg(int price) const {
     if (price >= 100000) {
         const char* msgs[] = {
             "오호, 큰손이 오셨군.",
-            "드디어 상하차의 결실을 보는군.",
+            "드디어 카지노의 결실을 보는군.",
             "이걸 산다고? 배짱 하나는 인정한다.",
             "이 정도면 사업가가 아니라 도박사 아닌가?",
             "부자가 되거나 파산하거나. 둘 중 하나다."
@@ -473,7 +473,7 @@ void Game::printShopNoMoneyMsg() const {
     const char* msgs[] = {
         "지갑이 텅 비었는데 뭘 사겠다는 거냐.",
         "꿈은 크지만 잔액은 작군.",
-        "상하차장 문은 항상 열려 있다.",
+        "카지노 문은 항상 열려 있다.",
         "돈이 부족합니다. 노동은 충분합니다.",
         "그 물건은 사고 싶고 돈은 없고. 인생이군."
     };
@@ -520,6 +520,7 @@ void Game::printHelp() const {
     std::cout << "  casino           슬롯머신 (카지노에서만)\n";
     std::cout << "  inventory        인벤토리 확인\n";
     std::cout << "  sell <아이템명>  아이템 판매 (구매가의 50%)\n";
+    std::cout << "  scores           랭킹 확인 (BST)\n";
     std::cout << "  status           상태 확인\n";
     std::cout << "  map              지도 확인\n";
     std::cout << "  quit             게임 종료\n";
@@ -683,6 +684,11 @@ void Game::doSell(const std::string& itemName) {
                   << " (현재: " << player.getCombatPower() << ")\n";
 }
 
+void Game::doScores() const {
+    std::cout << "\n=== BST 랭킹 (높은 점수순) ===\n";
+    scoreTree.printDescending();
+}
+
 void Game::doSortItems() const {
     const Room* room = dungeon.getRoom(player.getCurrentRoomId());
     if (!room || room->itemCount() == 0) {
@@ -792,6 +798,8 @@ void Game::processCommand(const std::string& line) {
         doStatus();
     } else if (cmd == "map") {
         doMap();
+    } else if (cmd == "scores") {
+        doScores();
     } else if (cmd == "sortitems") {
         doSortItems();
     } else if (cmd == "sell") {
