@@ -427,6 +427,11 @@ void Game::runSlotMachine() {
     // 꽝 확률: 나머지 (10% or 5%)
 
     std::cout << "\n🎰 슬롯 결과: ";
+    // 슬롯 머시닝을 도는 느낌을 주기 위해 작은 지연 추가
+    std::cout << "돌리는 중...\n";
+    battleDelay();
+    battleDelay();
+
     if (roll < jackpotThres) {
         int win = bet * 5;
         player.addMoney(win);
@@ -456,6 +461,8 @@ void Game::runSlotMachine() {
             std::cout << "🐾 펫 덕분에 겨우 본전! +" << win << "원\n";
         }
     }
+    // 결과 후 잠깐의 여운을 위해 지연 추가
+    battleDelay();
     std::cout << "남은 돈: " << player.getMoney() << "원\n";
 }
 
